@@ -1,68 +1,14 @@
-# Prelude
-
-> Role models are important. <br/>
-> -- Officer Alex J. Murphy / RoboCop
-
-One thing has always bothered me as Ruby developer - Python developers
-have a great programming style reference
-([PEP-8](http://www.python.org/dev/peps/pep-0008/)) and we never got
-an official guide, documenting Ruby coding style and best
-practices. And I do believe that style matters. I also believe that a
-great hacker community, such as Ruby has, should be quite capable of
-producing this coveted document.
-
-This guide started its life as our internal company Ruby coding guidelines
-(written by yours truly). At some point I decided that the work I was
-doing might be interesting to members of the Ruby community in general
-and that the world had little need for another internal company
-guideline. But the world could certainly benefit from a
-community-driven and community-sanctioned set of practices, idioms and
-style prescriptions for Ruby programming.
-
-Since the inception of the guide I've received a lot of feedback from
-members of the exceptional Ruby community around the world. Thanks for
-all the suggestions and the support! Together we can make a resource
-beneficial to each and every Ruby developer out there.
-
-By the way, if you're into Rails you might want to check out the
-complementary
-[Ruby on Rails 3 Style Guide](https://github.com/bbatsov/rails-style-guide).
-
 # The Ruby Style Guide
 
-This Ruby style guide recommends best practices so that real-world Ruby
-programmers can write code that can be maintained by other real-world Ruby
-programmers. A style guide that reflects real-world usage gets used, and a
-style guide that holds to an ideal that has been rejected by the people it is
-supposed to help risks not getting used at all &ndash; no matter how good it is.
-
-The guide is separated into several sections of related rules. I've
-tried to add the rationale behind the rules (if it's omitted I've
-assumed that is pretty obvious).
-
-I didn't come up with all the rules out of nowhere - they are mostly
-based on my extensive career as a professional software engineer,
-feedback and suggestions from members of the Ruby community and
-various highly regarded Ruby programming resources, such as
-["Programming Ruby 1.9"](http://pragprog.com/book/ruby4/programming-ruby-1-9-2-0)
-and ["The Ruby Programming Language"](http://www.amazon.com/Ruby-Programming-Language-David-Flanagan/dp/0596516177).
-
-The guide is still a work in progress - some rules are lacking
-examples, some rules don't have examples that illustrate them clearly
-enough. In due time these issues will be addressed - just keep them in
-mind for now.
+Our style guide is a fork of
+[bbatsov's great work](https://github.com/bbatsov/ruby-style-guide).
+We mainly stripped it a bit down and punctually changes rules.
 
 You can generate a PDF or an HTML copy of this guide using
 [Transmuter](https://github.com/TechnoGate/transmuter).
 
 [RuboCop](https://github.com/bbatsov/rubocop) is a code analyzer,
 based on this style guide.
-
-Translations of the guide are available in the following languages:
-
-* [Chinese Simplified](https://github.com/JuanitoFatas/ruby-style-guide/blob/master/README-zhCN.md)
-* [Chinese Traditional](https://github.com/JuanitoFatas/ruby-style-guide/blob/master/README-zhTW.md)
-* [French](https://github.com/porecreat/ruby-style-guide/blob/master/README-frFR.md)
 
 ## Table of Contents
 
@@ -113,6 +59,7 @@ Translations of the guide are available in the following languages:
     $ git config --global core.autocrlf true
     ```
 
+* End each file with a blank newline
 * Don't use `;` to separate statements and expressions. As a
   corollary - use one expression per line.
 
@@ -138,7 +85,7 @@ Translations of the guide are available in the following languages:
     class FooError < StandardError
     end
 
-    # okish
+    # bad
     class FooError < StandardError; end
 
     # good
@@ -154,13 +101,13 @@ Translations of the guide are available in the following languages:
     # bad
     def too_much; something; something_else; end
 
-    # okish - notice that the first ; is required
+    # bad (notice that the first ; is required)
     def no_braces_method; body end
 
-    # okish - notice that the second ; is optional
+    # bad (notice that the second ; is optional)
     def no_braces_method; body; end
 
-    # okish - valid syntax, but no ; make it kind of hard to read
+    # bad (valid syntax, but no ; make it kind of hard to read)
     def some_method() body end
 
     # good
@@ -169,11 +116,12 @@ Translations of the guide are available in the following languages:
     end
     ```
 
-    One exception to the rule are empty-body methods.
+    No exception to the rule are empty-body methods.
 
     ```Ruby
     # good
-    def no_op; end
+    def no_op
+    end
     ```
 
 * Use spaces around operators, after commas, colons and semicolons, around `{`
@@ -200,29 +148,25 @@ Translations of the guide are available in the following languages:
 
     `{` and `}` deserve a bit of clarification, since they are used
     for block and hash literals, as well as embedded expressions in
-    strings. For hash literals two styles are considered acceptable.
+    strings. For hash literals only the second of the following styles is
+    considered acceptable.
 
     ```Ruby
-    # good - space after { and before }
+    # bad - space after { and before }
     { one: 1, two: 2 }
 
     # good - no space after { and before }
     {one: 1, two: 2}
     ```
 
-    The first variant is slightly more readable (and arguably more
-    popular in the Ruby community in general). The second variant has
-    the advantage of adding visual difference between block and hash
-    literals. Whichever one you pick - apply it consistently.
-
-    As far as embedded expressions go, there are also two acceptable
-    options:
+    As far as embedded expressions go, there is also only one acceptable
+    option:
 
     ```Ruby
     # good - no spaces
     "string#{expr}"
 
-    # ok - arguably more readable
+    # bad
     "string#{ expr }"
     ```
 
@@ -297,7 +241,7 @@ Translations of the guide are available in the following languages:
       calc_something_else
     end
 
-    # good - it's apparent what's going on
+    # bad - it's apparent what's going on
     kind = case year
            when 1850..1889 then 'Blues'
            when 1890..1909 then 'Ragtime'
@@ -370,7 +314,7 @@ Translations of the guide are available in the following languages:
   line continuations for anything but string concatenation.
 
     ```Ruby
-    # bad
+    # ok
     result = 1 - \
              2
 
@@ -400,7 +344,7 @@ Translations of the guide are available in the following languages:
   acceptable.
 
     ```Ruby
-    # starting point (line is too long)
+    # bad: starting point (line is too long)
     def send_mail(source)
       Mailer.deliver(to: 'bob@example.com', from: 'us@example.com', subject: 'Important message', body: source.text)
     end
@@ -462,8 +406,6 @@ Translations of the guide are available in the following languages:
     num = 1_000_000
     ```
 
-* Use RDoc and its conventions for API documentation.  Don't put an
-  empty line between the comment block and the `def`.
 * Limit lines to 80 characters.
 * Avoid trailing whitespace.
 * Don't use block comments. They cannot be preceded by whitespace and are not
@@ -498,31 +440,6 @@ Never use `::` for regular method invocation.
     SomeModule::SomeClass::SOME_CONST
     SomeModule::SomeClass()
     ```
-
-* Use `def` with parentheses when there are arguments. Omit the
-  parentheses when the method doesn't accept any arguments.
-
-     ```Ruby
-     # bad
-     def some_method()
-       # body omitted
-     end
-
-     # good
-     def some_method
-       # body omitted
-     end
-
-     # bad
-     def some_method_with_arguments arg1, arg2
-       # body omitted
-     end
-
-     # good
-     def some_method_with_arguments(arg1, arg2)
-       # body omitted
-     end
-     ```
 
 * Never use `for`, unless you know exactly why. Most of the time iterators
   should be used instead. `for` is implemented in terms of `each` (so
@@ -678,8 +595,6 @@ Never use `::` for regular method invocation.
     document.saved? || document.save!
     ```
 
-* Avoid multi-line `?:` (the ternary operator); use `if/unless` instead.
-
 * Favor modifier `if/unless` usage when you have a single-line
   body. Another good alternative is the usage of control flow `&&/||`.
 
@@ -706,11 +621,11 @@ Never use `::` for regular method invocation.
     # bad
     do_something if not some_condition
 
+    # bad
+    some_condition || do_something
+
     # good
     do_something unless some_condition
-
-    # another good option
-    some_condition || do_something
     ```
 
 * Never use `unless` with `else`. Rewrite these with the positive case first.
@@ -807,30 +722,6 @@ Never use `::` for regular method invocation.
    end
    ```
 
-* Omit parentheses around parameters for methods that are part of an
-  internal DSL (e.g. Rake, Rails, RSpec), methods that have
-  "keyword" status in Ruby (e.g. `attr_reader`, `puts`) and attribute
-  access methods. Use parentheses around the arguments of all other
-  method invocations.
-
-    ```Ruby
-    class Person
-      attr_reader :name, :age
-
-      # omitted
-    end
-
-    temperance = Person.new('Temperance', 30)
-    temperance.name
-
-    puts temperance.age
-
-    x = Math.sin(y)
-    array.delete(e)
-
-    bowling.score.should == 0
-    ```
-
 * Omit the outer braces around an implicit options hash.
 
     ```Ruby
@@ -873,8 +764,7 @@ Never use `::` for regular method invocation.
 * Prefer `{...}` over `do...end` for single-line blocks.  Avoid using
   `{...}` for multi-line blocks (multiline chaining is always
   ugly). Always use `do...end` for "control flow" and "method
-  definitions" (e.g. in Rakefiles and certain DSLs).  Avoid `do...end`
-  when chaining.
+  definitions" (e.g. in Rakefiles and certain DSLs).
 
     ```Ruby
     names = ['Bozhidar', 'Steve', 'Sarah']
@@ -887,7 +777,7 @@ Never use `::` for regular method invocation.
     # good
     names.each { |name| puts name }
 
-    # bad
+    # good
     names.select do |name|
       name.start_with?('S')
     end.map { |name| name.upcase }
@@ -964,32 +854,6 @@ Never use `::` for regular method invocation.
     end
     ```
 
-* Don't use the return value of `=` (an assignment) in conditional
-  expressions unless the assignment is wrapped in parentheses. This is
-  a fairly popular idiom among Rubyists that's sometimes referred to as
-  *safe assignment in condition*.
-
-    ```Ruby
-    # bad (+ a warning)
-    if v = array.grep(/foo/)
-      do_something(v)
-      ...
-    end
-
-    # good (MRI would still complain, but RuboCop won't)
-    if (v = array.grep(/foo/))
-      do_something(v)
-      ...
-    end
-
-    # good
-    v = array.grep(/foo/)
-    if v
-      do_something(v)
-      ...
-    end
-    ```
-
 * Use `||=` freely to initialize variables.
 
     ```Ruby
@@ -1006,22 +870,6 @@ would happen if the current value happened to be `false`.)
 
     # good
     enabled = true if enabled.nil?
-    ```
-
-* Avoid explicit use of the case equality operator `===`. As it name
-  implies it's meant to be used implicitly by `case` expressions and
-  outside of them it yields some pretty confusing code.
-
-    ```Ruby
-    # bad
-    Array === something
-    (1..100) === 7
-    /something/ === some_string
-
-    # good
-    something.is_a?(Array)
-    (1..100).include?(7)
-    some_string =~ /something/
     ```
 
 * Avoid using Perl-style special variables (like `$:`, `$;`,
@@ -1051,9 +899,6 @@ would happen if the current value happened to be `false`.)
 * If the first argument to a method begins with an open parenthesis,
   always use parentheses in the method invocation. For example, write
 `f((3 + 2) + 1)`.
-
-* Always run the Ruby interpreter with the `-w` option so it will warn
-you if you forget either of the rules above!
 
 * Use the new lambda literal syntax for single line body blocks. Use the
   `lambda` method for multi-line blocks.
@@ -1308,8 +1153,7 @@ setting the warn level to 0 via `-W0`).
     end
     ```
 
-* Use `CamelCase` for classes and modules.  (Keep acronyms like HTTP,
-  RFC, XML uppercase.)
+* Use `CamelCase` for classes and modules.
 
     ```Ruby
     # bad
@@ -1397,17 +1241,6 @@ setting the warn level to 0 via `-W0`).
     end
     ```
 
-* When using `reduce` with short blocks, name the arguments `|a, e|`
-  (accumulator, element).
-* When defining binary operators, name the argument `other`(`<<` and
-  `[]` are exceptions to the rule, since their semantics are different).
-
-    ```Ruby
-    def +(other)
-      # body omitted
-    end
-    ```
-
 * Prefer `map` over `collect`, `find` over `detect`, `select` over
   `find_all`, `reduce` over `inject` and `size` over `length`. This is
   not a hard requirement; if the use of the alias enhances
@@ -1449,8 +1282,8 @@ setting the warn level to 0 via `-W0`).
 > it even clearer. <br/>
 > -- Steve McConnell
 
-* Write self-documenting code and ignore the rest of this section. Seriously!
-* Write comments in English.
+* Write self-documenting code.
+* Write comments in German.
 * Use one space between the leading `#` character of the comment and the text
   of the comment.
 * Comments longer than a word are capitalized and use punctuation. Use [one
@@ -1478,12 +1311,12 @@ at all.
 * The annotation keyword is followed by a colon and a space, then a note
   describing the problem.
 * If multiple lines are required to describe the problem, subsequent
-  lines should be indented two spaces after the `#`.
+  lines should be indented like this:
 
     ```Ruby
     def bar
       # FIXME: This has crashed occasionally since v3.2.1. It may
-      #   be related to the BarBazUtil upgrade.
+      #        be related to the BarBazUtil upgrade.
       baz(:quux)
     end
     ```
@@ -1500,16 +1333,8 @@ at all.
 
 * Use `TODO` to note missing features or functionality that should be
   added at a later date.
-* Use `FIXME` to note broken code that needs to be fixed.
-* Use `OPTIMIZE` to note slow or inefficient code that may cause
-  performance problems.
 * Use `HACK` to note code smells where questionable coding practices
   were used and should be refactored away.
-* Use `REVIEW` to note anything that should be looked at to confirm it
-  is working as intended. For example: `REVIEW: Are we sure this is how the
-  client does X currently?`
-* Use other custom annotation keywords if it feels appropriate, but be
-  sure to document them in your project's `README` or similar.
 
 ## Classes & Modules
 
@@ -1578,60 +1403,6 @@ at all.
     end
     ```
 
-* Favor the use of `module_function` over `extend self` when you want
-  to turn a module's instance methods into class methods.
-
-    ```Ruby
-    # bad
-    module Utilities
-      extend self
-
-      def parse_something(string)
-        # do stuff here
-      end
-
-      def other_utility_method(number, string)
-        # do some more stuff
-      end
-    end
-
-    # good
-    module Utilities
-      module_function
-
-      def parse_something(string)
-        # do stuff here
-      end
-
-      def other_utility_method(number, string)
-        # do some more stuff
-      end
-    end
-    ```
-
-* When designing class hierarchies make sure that they conform to the
-  [Liskov Substitution Principle](http://en.wikipedia.org/wiki/Liskov_substitution_principle).
-* Try to make your classes as
-  [SOLID](http://en.wikipedia.org/wiki/SOLID_(object-oriented_design\))
-  as possible.
-* Always supply a proper `to_s` method for classes that represent
-  domain objects.
-
-    ```Ruby
-    class Person
-      attr_reader :first_name, :last_name
-
-      def initialize(first_name, last_name)
-        @first_name = first_name
-        @last_name = last_name
-      end
-
-      def to_s
-        "#{@first_name} #{@last_name}"
-      end
-    end
-    ```
-
 * Use the `attr` family of functions to define trivial accessors or
 mutators.
 
@@ -1693,19 +1464,6 @@ constructor and comparison operators for you.
     Person = Struct.new(:first_name, :last_name) do
     end
     ````
-
-* Don't extend a `Struct.new` - it already is a new class. Extending it introduces a superfluous class level and may also introduce weird errors if the file is required multiple times.
-
-* Consider adding factory methods to provide additional sensible ways
-to create instances of a particular class.
-
-    ```Ruby
-    class Person
-      def self.create(options_hash)
-        # body omitted
-      end
-    end
-    ```
 
 * Prefer [duck-typing](http://en.wikipedia.org/wiki/Duck_typing) over inheritance.
 
@@ -1798,6 +1556,8 @@ in *Ruby* now, not in *Python*.
 
 * Use `def self.method` to define singleton methods. This makes the code
   easier to refactor since the class name is not repeated.
+  Avoid `class << self` except when necessary, e.g. single accessors and aliased
+  attributes.
 
     ```Ruby
     class TestClass
@@ -1811,8 +1571,7 @@ in *Ruby* now, not in *Python*.
         # body omitted
       end
 
-      # Also possible and convenient when you
-      # have to define many singleton methods.
+      # Avoid the following style
       class << self
         def first_method
           # body omitted
@@ -1822,22 +1581,16 @@ in *Ruby* now, not in *Python*.
           # body omitted
         end
       end
+
+      # Necessary
+      class << self
+        attr_accessor :per_page
+        alias_method :items_per_page, :per_page
+      end
     end
     ```
 
 ## Exceptions
-
-* Signal exceptions using the `fail` method. Use `raise` only when
-  catching an exception and re-raising it (because here you're not
-  failing, but explicitly and purposefully raising an exception).
-
-    ```Ruby
-    begin
-      fail 'Oops'
-    rescue => error
-      raise if error.message != 'Oops'
-    end
-    ```
 
 * Don't specify `RuntimeError` explicitly in the two argument version of `fail/raise`.
 
@@ -1847,19 +1600,6 @@ in *Ruby* now, not in *Python*.
 
     # good - signals a RuntimeError by default
     fail 'message'
-    ```
-
-* Prefer supplying an exception class and a message as two separate
-  arguments to `fail/raise`, instead of an exception instance.
-
-    ```Ruby
-    # bad
-    fail SomeException.new('message')
-    # Note that there is no way to do `fail SomeException.new('message'), backtrace`.
-
-    # good
-    fail SomeException, 'message'
-    # Consistent with `fail SomeException, 'message', backtrace`.
     ```
 
 * Never return from an `ensure` block. If you explicitly return from a
@@ -2093,10 +1833,6 @@ this rule only to arrays with two or more elements.
 
 * When accessing the first or last element from an array, prefer `first` or `last` over `[0]` or `[-1]`.
 
-* Use `Set` instead of `Array` when dealing with unique elements. `Set`
-  implements a collection of unordered values with no duplicates. This
-  is a hybrid of `Array`'s intuitive inter-operation facilities and
-  `Hash`'s fast lookup.
 * Prefer symbols instead of strings as hash keys.
 
     ```Ruby
@@ -2133,19 +1869,8 @@ this rule only to arrays with two or more elements.
     hash.value?(value)
     ```
 
-* Use `Hash#fetch` when dealing with hash keys that should be present.
-
-    ```Ruby
-    heroes = { batman: 'Bruce Wayne', superman: 'Clark Kent' }
-    # bad - if we make a mistake we might not spot it right away
-    heroes[:batman] # => "Bruce Wayne"
-    heroes[:supermann] # => nil
-
-    # good - fetch raises a KeyError making the problem obvious
-    heroes.fetch(:supermann)
-    ```
-
-* Introduce default values for hash keys via `Hash#fetch` as opposed to using custom logic.
+* Introduce boolean default values for hash keys via `Hash#fetch` as opposed to
+  using custom logic.
 
    ```Ruby
    batman = { name: 'Bruce Wayne', is_evil: false }
@@ -2155,19 +1880,6 @@ this rule only to arrays with two or more elements.
 
    # good - fetch work correctly with falsy values
    batman.fetch(:is_evil, true) # => false
-   ```
-
-* Prefer the use of the block instead of the default value in `Hash#fetch`.
-
-   ```Ruby
-   batman = { name: 'Bruce Wayne' }
-
-   # bad - if we use the default value, we eager evaluate it
-   # so it can slow the program down if done multiple times
-   batman.fetch(:powers, get_batman_powers) # get_batman_powers is an expensive call
-
-   # good - blocks are lazy evaluated, so only triggered in case of KeyError exception
-   batman.fetch(:powers) { get_batman_powers }
    ```
 
 * Rely on the fact that as of Ruby 1.9 hashes are ordered.
@@ -2185,13 +1897,6 @@ this rule only to arrays with two or more elements.
     email_with_name = "#{user.name} <#{user.email}>"
     ```
 
-* Consider padding string interpolation code with space. It more clearly sets the
-  code apart from the string.
-
-    ```Ruby
-    "#{ user.last_name }, #{ user.first_name }"
-    ```
-
 * Prefer single-quoted strings when you don't need string interpolation or
   special symbols such as `\t`, `\n`, `'`, etc.
 
@@ -2201,18 +1906,6 @@ this rule only to arrays with two or more elements.
 
     # good
     name = 'Bozhidar'
-    ```
-
-* Don't use the character literal syntax `?x`. Since Ruby 1.9 it's
-  basically redundant - `?x` would interpreted as `'x'` (a string with
-  a single character in it).
-
-    ```Ruby
-    # bad
-    char = ?c
-
-    # good
-    char = 'c'
     ```
 
 * Don't leave out `{}` around instance and global variables being
@@ -2282,20 +1975,6 @@ this rule only to arrays with two or more elements.
 
 * Don't use regular expressions if you just need plain text search in string:
   `string['text']`
-* For simple constructions you can use regexp directly through string index.
-
-    ```Ruby
-    match = string[/regexp/]             # get content of matched regexp
-    first_group = string[/text(grp)/, 1] # get content of captured group
-    string[/text (grp)/, 1] = 'replace'  # string => 'text replace'
-    ```
-
-* Use non-capturing groups when you don't use captured result of parentheses.
-
-    ```Ruby
-    /(first|second)/   # bad
-    /(?:first|second)/ # good
-    ```
 
 * Don't use the cryptic Perl-legacy variables denoting last regexp group matches
   (`$1`, `$2`, etc). Use `Regexp.last_match[n]` instead.
@@ -2327,9 +2006,6 @@ this rule only to arrays with two or more elements.
     process meaningful_var
     ```
 
-* Character classes have only a few special characters you should care about:
-  `^`, `-`, `\`, `]`, so don't escape `.` or brackets in `[]`.
-
 * Be careful with `^` and `$` as they match start/end of line, not string endings.
   If you want to match the whole string use: `\A` and `\z` (not to be
   confused with `\Z` which is the equivalent of `/\n?\z/`).
@@ -2352,8 +2028,6 @@ this rule only to arrays with two or more elements.
       end
     }x
     ```
-
-* For complex replacements `sub`/`gsub` can be used with block or hash.
 
 ## Percent Literals
 
@@ -2419,10 +2093,6 @@ this rule only to arrays with two or more elements.
     echo = %x(echo `date`)
     ```
 
-* Avoid the use of `%s`. It seems that the community has decided
-  `:"some string"` is the preferred way to created a symbol with
-  spaces in it.
-
 * Prefer `()` as delimiters for all `%` literals, except `%r`. Since
   braces often appear inside regular expressions in many scenarios a
   less common character like `{` might be a better choice for a
@@ -2444,35 +2114,6 @@ this rule only to arrays with two or more elements.
 
 * Do not mess around in core classes when writing libraries.
   (Do not monkey-patch them.)
-
-* The block form of `class_eval` is preferable to the string-interpolated form.
-  - when you use the string-interpolated form, always supply `__FILE__` and `__LINE__`, so that your backtraces make sense:
-
-    ```ruby
-    class_eval 'def use_relative_model_naming?; true; end', __FILE__, __LINE__
-    ```
-
-  - `define_method` is preferable to `class_eval{ def ... }`
-
-* When using `class_eval` (or other `eval`) with string interpolation, add a comment block showing its appearance if interpolated (a practice I learned from the Rails code):
-
-    ```ruby
-    # from activesupport/lib/active_support/core_ext/string/output_safety.rb
-    UNSAFE_STRING_METHODS.each do |unsafe_method|
-      if 'String'.respond_to?(unsafe_method)
-        class_eval <<-EOT, __FILE__, __LINE__ + 1
-          def #{unsafe_method}(*args, &block)       # def capitalize(*args, &block)
-            to_str.#{unsafe_method}(*args, &block)  #   to_str.capitalize(*args, &block)
-          end                                       # end
-
-          def #{unsafe_method}!(*args)              # def capitalize!(*args)
-            @dirty = true                           #   @dirty = true
-            super                                   #   super
-          end                                       # end
-        EOT
-      end
-    end
-    ```
 
 * Avoid using `method_missing` for metaprogramming because backtraces become messy, the behavior is not listed in `#methods`, and misspelled method calls might silently work, e.g. `nukes.launch_state = false`. Consider using delegation, proxy, or `define_method` instead. If you must use `method_missing`:
 
@@ -2505,11 +2146,6 @@ this rule only to arrays with two or more elements.
 
 ## Misc
 
-* Write `ruby -w` safe code.
-* Avoid hashes as optional parameters. Does the method do too much? (Object initializers are exceptions for this rule).
-* Avoid methods longer than 10 LOC (lines of code). Ideally, most methods will be shorter than
-  5 LOC. Empty lines do not contribute to the relevant LOC.
-* Avoid parameter lists longer than three or four parameters.
 * If you really need "global" methods, add them to Kernel
   and make them private.
 * Use module instance variables instead of global variables.
@@ -2529,14 +2165,8 @@ this rule only to arrays with two or more elements.
     ```
 
 * Avoid `alias` when `alias_method` will do.
-* Use `OptionParser` for parsing complex command line options and
-`ruby -s` for trivial command line options.
 * Prefer `Time.now` over `Time.new` when retrieving the current system time.
-* Code in a functional way, avoiding mutation when that makes sense.
 * Do not mutate arguments unless that is the purpose of the method.
-* Avoid more than three levels of block nesting.
-* Be consistent. In an ideal world, be consistent with these guidelines.
-* Use common sense.
 
 ## Tools
 
@@ -2550,34 +2180,9 @@ checker based on this style guide. RuboCop already covers a
 significant portion of the Guide, supports both MRI 1.9 and MRI 2.0
 and has good Emacs integration.
 
-### RubyMine
-
-[RubyMine](http://www.jetbrains.com/ruby/)'s code inspections are
-[partially based](http://confluence.jetbrains.com/display/RUBYDEV/RubyMine+Inspections)
-on this guide.
-
-# Contributing
-
-Nothing written in this guide is set in stone. It's my desire to work
-together with everyone interested in Ruby coding style, so that we could
-ultimately create a resource that will be beneficial to the entire Ruby
-community.
-
-Feel free to open tickets or send pull requests with improvements. Thanks in
-advance for your help!
-
 # License
 
 ![Creative Commons License](http://i.creativecommons.org/l/by/3.0/88x31.png)
 This work is licensed under a [Creative Commons Attribution 3.0 Unported License](http://creativecommons.org/licenses/by/3.0/deed.en_US)
 
-# Spread the Word
-
-A community-driven style guide is of little use to a community that
-doesn't know about its existence. Tweet about the guide, share it with
-your friends and colleagues. Every comment, suggestion or opinion we
-get makes the guide just a little bit better. And we want to have the
-best possible guide, don't we?
-
-Cheers,<br/>
-[Bozhidar](https://twitter.com/bbatsov)
+Most of the work is done by [bbatsov](https://github.com/bbatsov).
