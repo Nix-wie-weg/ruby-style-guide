@@ -2,7 +2,7 @@
 
 Our style guide is a fork of
 [bbatsov's great work](https://github.com/bbatsov/ruby-style-guide).
-We mainly stripped it a bit down and punctually changes rules.
+We mainly stripped it a bit down and punctually changed rules.
 
 You can generate a PDF or an HTML copy of this guide using
 [Transmuter](https://github.com/TechnoGate/transmuter).
@@ -1292,7 +1292,7 @@ setting the warn level to 0 via `-W0`).
 
     ```Ruby
     # bad
-    counter += 1 # Increments counter by one.
+    counter += 1 # Erhöht counter um eins.
     ```
 
 * Keep existing comments up-to-date. An outdated comment is worse than no comment
@@ -1315,8 +1315,7 @@ at all.
 
     ```Ruby
     def bar
-      # FIXME: This has crashed occasionally since v3.2.1. It may
-      #        be related to the BarBazUtil upgrade.
+      # TODO: Seit Version 3.2.1 von BarBazUtil kracht es hier gewaltig.
       baz(:quux)
     end
     ```
@@ -1327,7 +1326,7 @@ at all.
 
     ```Ruby
     def bar
-      sleep 100 # OPTIMIZE
+      sleep 100 # TODO: Optimieren
     end
     ```
 
