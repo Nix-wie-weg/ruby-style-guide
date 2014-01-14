@@ -2167,6 +2167,11 @@ this rule only to arrays with two or more elements.
 * Prefer `Time.now` over `Time.new` when retrieving the current system time.
 * Do not mutate arguments unless that is the purpose of the method.
 
+## Ruby on Rails
+
+* When converting `Date` to `Time` always use `#to_time_with_zone`.
+* Always set `config.time_zone` in `application.rb`.
+
 ## Tools
 
 Here's some tools to help you automatically check Ruby code against
