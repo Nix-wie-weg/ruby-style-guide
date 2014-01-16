@@ -2169,7 +2169,7 @@ this rule only to arrays with two or more elements.
 
 ## Ruby on Rails
 
-* When converting `Date` to `Time` always use `#to_time_with_zone`.
+* When [converting](http://www.elabs.se/blog/36-working-with-time-zones-in-ruby-on-rails) `Date` to `Time` always use `#to_time_with_zone`.
 * Always set `config.time_zone` in `application.rb`.
 
 ## Tools
