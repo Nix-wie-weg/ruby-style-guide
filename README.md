@@ -2,13 +2,11 @@
 
 Our style guide is a fork of
 [bbatsov's great work](https://github.com/bbatsov/ruby-style-guide).
-We mainly stripped it a bit down and punctually changed rules.
+We mainly stripped out all rules [RuboCop](https://github.com/bbatsov/rubocop)
+analyzes and punctually made changes.
 
 You can generate a PDF or an HTML copy of this guide using
 [Transmuter](https://github.com/TechnoGate/transmuter).
-
-[RuboCop](https://github.com/bbatsov/rubocop) is a code analyzer,
-based on this style guide.
 
 ## Table of Contents
 
@@ -50,38 +48,6 @@ based on this style guide.
     FooError = Class.new(StandardError)
     ```
 
-* Avoid single-line methods. Although they are somewhat popular in the
-  wild, there are a few peculiarities about their definition syntax
-  that make their use undesirable. At any rate - there should be no more
-  than one expression in a single-line method.
-
-    ```Ruby
-    # bad
-    def too_much; something; something_else; end
-
-    # bad (notice that the first ; is required)
-    def no_braces_method; body end
-
-    # bad (notice that the second ; is optional)
-    def no_braces_method; body; end
-
-    # bad (valid syntax, but no ; make it kind of hard to read)
-    def some_method() body end
-
-    # good
-    def some_method
-      body
-    end
-    ```
-
-    No exception to the rule are empty-body methods.
-
-    ```Ruby
-    # good
-    def no_op
-    end
-    ```
-
 * Use spaces  after  . Whitespace might be (mostly) irrelevant to the Ruby
   interpreter, but its proper use is the key to writing easily
   readable code.
@@ -115,37 +81,6 @@ based on this style guide.
     advised to stick with it. The second, on the other hand, is
     (arguably) a bit more readable. As with hashes - pick one style
     and apply it consistently.
-
-
-* Indent `when` as deep as `case`. I know that many would disagree
-  with this one, but it's the style established in both "The Ruby
-  Programming Language" and "Programming Ruby".
-
-    ```Ruby
-    # bad
-    case
-      when song.name == 'Misty'
-        puts 'Not again!'
-      when song.duration > 120
-        puts 'Too long!'
-      when Time.now.hour > 21
-        puts "It's too late"
-      else
-        song.play
-    end
-
-    # good
-    case
-    when song.name == 'Misty'
-      puts 'Not again!'
-    when song.duration > 120
-      puts 'Too long!'
-    when Time.now.hour > 21
-      puts "It's too late"
-    else
-      song.play
-    end
-    ```
 
 * When assigning the result of a conditional expression to a variable, preserve the usual alignment of its branches.
 
@@ -239,6 +174,8 @@ based on this style guide.
   line. When aligning parameters is not appropriate due to line-length
   constraints, single indent for the lines after the first is also
   acceptable.
+
+  TODO: Konfigurierbar?
 
     ```Ruby
     # bad: starting point (line is too long)
@@ -462,7 +399,7 @@ setting the warn level to 0 via `-W0`).
 
 * Name identifiers in English.
 
-* Use `snake_case` for symbols, methods and variables.
+* Use `snake_case` for symbols.
 
     ```Ruby
     # bad
@@ -470,22 +407,8 @@ setting the warn level to 0 via `-W0`).
     :SomeSymbol
     :someSymbol
 
-    someVar = 5
-
-    def someMethod
-      ...
-    end
-
-    def SomeMethod
-     ...
-    end
-
     # good
     :some_symbol
-
-    def some_method
-      ...
-    end
     ```
 
 * The names of predicate methods (methods that return a boolean value)
@@ -691,37 +614,6 @@ at all.
     end
     ```
 
-* Use the `attr` family of functions to define trivial accessors or
-mutators.
-
-    ```Ruby
-    # bad
-    class Person
-      def initialize(first_name, last_name)
-        @first_name = first_name
-        @last_name = last_name
-      end
-
-      def first_name
-        @first_name
-      end
-
-      def last_name
-        @last_name
-      end
-    end
-
-    # good
-    class Person
-      attr_reader :first_name, :last_name
-
-      def initialize(first_name, last_name)
-        @first_name = first_name
-        @last_name = last_name
-      end
-    end
-    ```
-
 * Consider using `Struct.new`, which defines the trivial accessors,
 constructor and comparison operators for you.
 
@@ -791,7 +683,7 @@ in *Ruby* now, not in *Python*.
 
     ```Ruby
     class TestClass
-      
+
       # Avoid the following style
       class << self
         def first_method
@@ -1099,10 +991,6 @@ this rule only to arrays with two or more elements.
 
 ## Misc
 
-* If you really need "global" methods, add them to Kernel
-  and make them private.
-
-* Avoid `alias` when `alias_method` will do.
 * Prefer `Time.now` over `Time.new` when retrieving the current system time.
 * Do not mutate arguments unless that is the purpose of the method.
 
@@ -1110,18 +998,6 @@ this rule only to arrays with two or more elements.
 
 * When [converting](http://www.elabs.se/blog/36-working-with-time-zones-in-ruby-on-rails) `Date` to `Time` always use `#to_time_with_zone`.
 * Always set `config.time_zone` in `application.rb`.
-
-## Tools
-
-Here's some tools to help you automatically check Ruby code against
-this guide.
-
-### RuboCop
-
-[RuboCop](https://github.com/bbatsov/rubocop) is a Ruby code style
-checker based on this style guide. RuboCop already covers a
-significant portion of the Guide, supports both MRI 1.9 and MRI 2.0
-and has good Emacs integration.
 
 # License
 
