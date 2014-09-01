@@ -13,8 +13,6 @@ You can generate a PDF or an HTML copy of this guide using
 * [Source Code Layout](#source-code-layout)
 * [Syntax](#syntax)
 * [Naming](#naming)
-* [Comments](#comments)
-    * [Comment Annotations](#comment-annotations)
 * [Classes](#classes--modules)
 * [Exceptions](#exceptions)
 * [Collections](#collections)
@@ -23,7 +21,6 @@ You can generate a PDF or an HTML copy of this guide using
 * [Percent Literals](#percent-literals)
 * [Metaprogramming](#metaprogramming)
 * [Misc](#misc)
-* [Tools](#tools)
 
 ## Source Code Layout
 
@@ -34,255 +31,8 @@ You can generate a PDF or an HTML copy of this guide using
 
 * Use `UTF-8` as the source file encoding.
 
-* Prefer a single-line format for class definitions with no body.
-
-    ```Ruby
-    # bad
-    class FooError < StandardError
-    end
-
-    # bad
-    class FooError < StandardError; end
-
-    # good
-    FooError = Class.new(StandardError)
-    ```
-
-* Use spaces  after  . Whitespace might be (mostly) irrelevant to the Ruby
-  interpreter, but its proper use is the key to writing easily
-  readable code.
-
-
-    `{` and `}` deserve a bit of clarification, since they are used
-    for block and hash literals, as well as embedded expressions in
-    strings. For hash literals only the second of the following styles is
-    considered acceptable.
-
-    ```Ruby
-    # bad - space after { and before }
-    { one: 1, two: 2 }
-
-    # good - no space after { and before }
-    {one: 1, two: 2}
-    ```
-
-    As far as embedded expressions go, there is also only one acceptable
-    option:
-
-    ```Ruby
-    # good - no spaces
-    "string#{expr}"
-
-    # bad
-    "string#{ expr }"
-    ```
-
-    The first style is extremely more popular and you're generally
-    advised to stick with it. The second, on the other hand, is
-    (arguably) a bit more readable. As with hashes - pick one style
-    and apply it consistently.
-
-* When assigning the result of a conditional expression to a variable, preserve the usual alignment of its branches.
-
-    ```Ruby
-    # bad - pretty convoluted
-    kind = case year
-    when 1850..1889 then 'Blues'
-    when 1890..1909 then 'Ragtime'
-    when 1910..1929 then 'New Orleans Jazz'
-    when 1930..1939 then 'Swing'
-    when 1940..1950 then 'Bebop'
-    else 'Jazz'
-    end
-
-    result = if some_cond
-      calc_something
-    else
-      calc_something_else
-    end
-
-    # bad - it's apparent what's going on
-    kind = case year
-           when 1850..1889 then 'Blues'
-           when 1890..1909 then 'Ragtime'
-           when 1910..1929 then 'New Orleans Jazz'
-           when 1930..1939 then 'Swing'
-           when 1940..1950 then 'Bebop'
-           else 'Jazz'
-           end
-
-    result = if some_cond
-               calc_something
-             else
-               calc_something_else
-             end
-
-    # good (and a bit more width efficient)
-    kind =
-      case year
-      when 1850..1889 then 'Blues'
-      when 1890..1909 then 'Ragtime'
-      when 1910..1929 then 'New Orleans Jazz'
-      when 1930..1939 then 'Swing'
-      when 1940..1950 then 'Bebop'
-      else 'Jazz'
-      end
-
-    result =
-      if some_cond
-        calc_something
-      else
-        calc_something_else
-      end
-    ```
-
-* Use empty lines between method definitions and also to break up a method into logical
-  paragraphs internally.
-
-    ```Ruby
-    def some_method
-      data = initialize(options)
-
-      data.manipulate!
-
-      data.result
-    end
-
-    def some_method
-      result
-    end
-    ```
-
-* Avoid line continuation `\` where not required. In practice, avoid using
-  line continuations for anything but string concatenation.
-
-    ```Ruby
-    # ok
-    result = 1 - \
-             2
-
-    # good (but still ugly as hell)
-    result = 1 \
-             - 2
-
-    long_string = 'First part of the long string' \
-                  ' and second part of the long string'
-    ```
-
-
-* Align the parameters of a method call if they span more than one
-  line. When aligning parameters is not appropriate due to line-length
-  constraints, single indent for the lines after the first is also
-  acceptable.
-
-  TODO: Konfigurierbar?
-
-    ```Ruby
-    # bad: starting point (line is too long)
-    def send_mail(source)
-      Mailer.deliver(to: 'bob@example.com', from: 'us@example.com', subject: 'Important message', body: source.text)
-    end
-
-    # bad (double indent)
-    def send_mail(source)
-      Mailer.deliver(
-          to: 'bob@example.com',
-          from: 'us@example.com',
-          subject: 'Important message',
-          body: source.text)
-    end
-
-    # good
-    def send_mail(source)
-      Mailer.deliver(to: 'bob@example.com',
-                     from: 'us@example.com',
-                     subject: 'Important message',
-                     body: source.text)
-    end
-
-    # good (normal indent)
-    def send_mail(source)
-      Mailer.deliver(
-        to: 'bob@example.com',
-        from: 'us@example.com',
-        subject: 'Important message',
-        body: source.text
-      )
-    end
-    ```
-
-* Align the elements of array literals spanning multiple lines.
-
-    ```Ruby
-    # bad - single indent
-    menu_item = ["Spam", "Spam", "Spam", "Spam", "Spam", "Spam", "Spam", "Spam",
-      "Baked beans", "Spam", "Spam", "Spam", "Spam", "Spam"]
-
-    # good
-    menu_item = [
-      "Spam", "Spam", "Spam", "Spam", "Spam", "Spam", "Spam", "Spam",
-      "Baked beans", "Spam", "Spam", "Spam", "Spam", "Spam"
-    ]
-
-    # good
-    menu_item =
-      ["Spam", "Spam", "Spam", "Spam", "Spam", "Spam", "Spam", "Spam",
-       "Baked beans", "Spam", "Spam", "Spam", "Spam", "Spam"]
-    ```
-
 
 ## Syntax
-
-* Never use `while/until condition do` for multi-line `while/until`.
-  TODO: Hä?
-    ```Ruby
-    # bad
-    while x > 5 do
-      # body omitted
-    end
-
-    until x > 5 do
-      # body omitted
-    end
-
-    # good
-    while x > 5
-      # body omitted
-    end
-
-    until x > 5
-      # body omitted
-    end
-    ```
-
-* Prefer `{...}` over `do...end` for single-line blocks.  Avoid using
-  `{...}` for multi-line blocks (multiline chaining is always
-  ugly). Always use `do...end` for "control flow" and "method
-  definitions" (e.g. in Rakefiles and certain DSLs).
-
-    ```Ruby
-    names = ['Bozhidar', 'Steve', 'Sarah']
-
-    # bad
-    names.each do |name|
-      puts name
-    end
-
-    # good
-    names.each { |name| puts name }
-
-    # good
-    names.select do |name|
-      name.start_with?('S')
-    end.map { |name| name.upcase }
-
-    # good
-    names.select { |name| name.start_with?('S') }.map { |name| name.upcase }
-    ```
-
-    Some will argue that multiline chaining would look OK with the use of {...}, but they should
-    ask themselves - is this code really readable and can the blocks' contents be extracted into
-    nifty methods?
 
 * As a corollary, avoid shadowing methods with local variables unless they are both equivalent.
 
@@ -312,13 +62,6 @@ You can generate a PDF or an HTML copy of this guide using
     end
     ```
 
-* Use `||=` freely to initialize variables.
-
-    ```Ruby
-    # set name to Bozhidar, only if it's nil or false
-    name ||= 'Bozhidar'
-    ```
-
 * Don't use `||=` to initialize boolean variables. (Consider what
 would happen if the current value happened to be `false`.)
 
@@ -329,36 +72,6 @@ would happen if the current value happened to be `false`.)
     # good
     enabled = true if enabled.nil?
     ```
-
-* If the first argument to a method begins with an open parenthesis,
-  always use parentheses in the method invocation. For example, write
-`f((3 + 2) + 1)`.
-
-* Prefer `proc.call()` over `proc[]` or `proc.()` for both lambdas and procs.
-
-    ```Ruby
-    # bad - looks similar to Enumeration access
-    l = ->(v) { puts v }
-    l[1]
-
-    # also bad - uncommon syntax
-    l = ->(v) { puts v }
-    l.(1)
-
-    # good
-    l = ->(v) { puts v }
-    l.call(1)
-    ```
-
-
-* Use `$stdout/$stderr/$stdin` instead of
-  `STDOUT/STDERR/STDIN`. `STDOUT/STDERR/STDIN` are constants, and
-  while you can actually reassign (possibly to redirect some stream)
-  constants in Ruby, you'll get an interpreter warning if you do so.
-
-* Use `warn` instead of `$stderr.puts`. Apart from being more concise
-and clear, `warn` allows you to suppress warnings if you need to (by
-setting the warn level to 0 via `-W0`).
 
 * Use `[*var]` or `Array()` instead of explicit `Array` check, when dealing with a
   variable you want to treat as an Array, but you're not certain it's
@@ -389,15 +102,11 @@ setting the warn level to 0 via `-W0`).
     do_something if x.between?(1000, 2000)
     ```
 
-* Avoid the use of flip-flops.
-
 ## Naming
 
 > The only real difficulties in programming are cache invalidation and
 > naming things. <br/>
 > -- Phil Karlton
-
-* Name identifiers in English.
 
 * Use `snake_case` for symbols.
 
@@ -463,129 +172,7 @@ setting the warn level to 0 via `-W0`).
     end
     ```
 
-* Use `flat_map` instead of `map` + `flatten`.
-  This does not apply for arrays with a depth greater than 2, i.e.
-  if `users.first.songs == ['a', ['b','c']]`, then use `map + flatten` rather than `flat_map`.
-  `flat_map` flattens the array by 1, whereas `flatten` flattens it all the way.
-
-    ```Ruby
-    # bad
-    all_songs = users.map(&:songs).flatten.uniq
-
-    # good
-    all_songs = users.flat_map(&:songs).uniq
-    ```
-
-* Use `reverse_each` instead of `reverse.each`. `reverse_each` doesn't
-  do a new array allocation and that's a good thing.
-
-
-    ```Ruby
-    # bad
-    array.reverse.each { ... }
-
-    # good
-    array.reverse_each { ... }
-    ```
-
-## Comments
-
-> Good code is its own best documentation. As you're about to add a
-> comment, ask yourself, "How can I improve the code so that this
-> comment isn't needed?" Improve the code and then document it to make
-> it even clearer. <br/>
-> -- Steve McConnell
-
-* Write self-documenting code.
-* Write comments in German.
-* Comments longer than a word are capitalized and use punctuation. Use [one
-  space](http://en.wikipedia.org/wiki/Sentence_spacing) after periods.
-* Avoid superfluous comments.
-
-    ```Ruby
-    # bad
-    counter += 1 # Erhöht counter um eins.
-    ```
-
-* Keep existing comments up-to-date. An outdated comment is worse than no comment
-at all.
-
-> Good code is like a good joke - it needs no explanation. <br/>
-> -- Russ Olsen
-
-* Avoid writing comments to explain bad code. Refactor the code to
-  make it self-explanatory. (Do or do not - there is no try. --Yoda)
-
-### Comment Annotations
-
-* Annotations should usually be written on the line immediately above
-  the relevant code.
-* The annotation keyword is followed by a colon and a space, then a note
-  describing the problem.
-* If multiple lines are required to describe the problem, subsequent
-  lines should be indented like this:
-
-    ```Ruby
-    def bar
-      # TODO: Seit Version 3.2.1 von BarBazUtil kracht es hier gewaltig.
-      baz(:quux)
-    end
-    ```
-
-* In cases where the problem is so obvious that any documentation would
-  be redundant, annotations may be left at the end of the offending line
-  with no note. This usage should be the exception and not the rule.
-
-    ```Ruby
-    def bar
-      sleep 100 # TODO: Optimieren
-    end
-    ```
-
-* Use `TODO` to note missing features or functionality that should be
-  added at a later date.
-* Use `HACK` to note code smells where questionable coding practices
-  were used and should be refactored away.
-
 ## Classes & Modules
-
-* Use a consistent structure in your class definitions.
-
-    ```Ruby
-    class Person
-      # extend and include go first
-      extend SomeModule
-      include AnotherModule
-
-      # constants are next
-      SOME_CONSTANT = 20
-
-      # afterwards we have attribute macros
-      attr_reader :name
-
-      # followed by other macros (if any)
-      validates :name
-
-      # public class methods are next in line
-      def self.some_method
-      end
-
-      # followed by public instance methods
-      def some_method
-      end
-
-      # protected and private methods are grouped near the end
-      protected
-
-      def some_protected_method
-      end
-
-      private
-
-      def some_private_method
-      end
-    end
-    ```
 
 * Prefer modules to classes with only class methods. Classes should be
   used only when it makes sense to create instances out of them.
@@ -676,64 +263,7 @@ in accordance with their intended usage. Don't go off leaving
 everything `public` (which is the default). After all we're coding
 in *Ruby* now, not in *Python*.
 
-* Use `def self.method` to define singleton methods. This makes the code
-  easier to refactor since the class name is not repeated.
-  Avoid `class << self` except when necessary, e.g. single accessors and aliased
-  attributes.
-
-    ```Ruby
-    class TestClass
-
-      # Avoid the following style
-      class << self
-        def first_method
-          # body omitted
-        end
-
-        def second_method_etc
-          # body omitted
-        end
-      end
-
-      # Necessary
-      class << self
-        attr_accessor :per_page
-        alias_method :items_per_page, :per_page
-      end
-    end
-    ```
-
 ## Exceptions
-
-
-* Mitigate the proliferation of `begin` blocks by using
-  *contingency methods* (a term coined by Avdi Grimm).
-
-    ```Ruby
-    # bad
-    begin
-      something_that_might_fail
-    rescue IOError
-      # handle IOError
-    end
-
-    begin
-      something_else_that_might_fail
-    rescue IOError
-      # handle IOError
-    end
-
-    # good
-    def with_io_error_handling
-       yield
-    rescue IOError
-      # handle IOError
-    end
-
-    with_io_error_handling { something_that_might_fail }
-
-    with_io_error_handling { something_else_that_might_fail }
-    ```
 
 * Don't use exceptions for flow of control.
 
@@ -750,29 +280,6 @@ in *Ruby* now, not in *Python*.
       puts 'Cannot divide by 0!'
     else
       n / d
-    end
-    ```
-
-* Put more specific exceptions higher up the rescue chain, otherwise
-  they'll never be rescued from.
-
-    ```Ruby
-    # bad
-    begin
-      # some code
-    rescue Exception => e
-      # some handling
-    rescue StandardError => e
-      # some handling
-    end
-
-    # good
-    begin
-      # some code
-    rescue StandardError => e
-      # some handling
-    rescue Exception => e
-      # some handling
     end
     ```
 
@@ -795,27 +302,6 @@ introducing new exception classes.
 
 ## Collections
 
-* Prefer `%i` to the literal array syntax when you need an array of
-symbols(and you don't need to maintain Ruby 1.9 compatibility). Apply
-this rule only to arrays with two or more elements.
-
-    ```Ruby
-    # bad
-    STATES = [:draft, :open, :closed]
-
-    # good
-    STATES = %i(draft open closed)
-    ```
-
-* Avoid the creation of huge gaps in arrays.
-
-    ```Ruby
-    arr = []
-    arr[100] = 1 # now you have an array with lots of nils
-    ```
-
-* When accessing the first or last element from an array, prefer `first` or `last` over `[0]` or `[-1]`.
-
 * Prefer symbols instead of strings as hash keys.
 
     ```Ruby
@@ -827,20 +313,6 @@ this rule only to arrays with two or more elements.
     ```
 
 * Avoid the use of mutable objects as hash keys.
-
-* Introduce boolean default values for hash keys via `Hash#fetch` as opposed to
-  using custom logic.
-
-   ```Ruby
-   batman = { name: 'Bruce Wayne', is_evil: false }
-
-   # bad - if we just use || operator with falsy value we won't get the expected result
-   batman[:is_evil] || true # => true
-
-   # good - fetch work correctly with falsy values
-   batman.fetch(:is_evil, true) # => false
-   ```
-
 * Rely on the fact that as of Ruby 1.9 hashes are ordered.
 * Never modify a collection while traversing it.
 
