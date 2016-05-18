@@ -263,7 +263,41 @@ in accordance with their intended usage. Don't go off leaving
 everything `public` (which is the default). After all we're coding
 in *Ruby* now, not in *Python*.
 
-## Exceptions
+* Always extened self to declare private class methods. When you have the
+  need for a private class method, there is most likely a related public class
+  method on the same class, which is calling the private class method.
+
+  ```Ruby
+  # bad
+  class Cake
+    def self.slice_cake
+      slice_into_pieces(8)
+    end
+
+    def self.slice_into_pices(n)
+      ...
+    end
+
+    private_class_method :slice_into_pieces
+  end
+
+  # good
+  class Cake
+    class << self
+      def slice_cake
+        slice_into_pieces(8)
+      end
+
+      private
+
+      def slice_into_pieces(n)
+        ...
+      end
+    end
+  end
+  ```
+
+  ## Exceptions
 
 * Don't use exceptions for flow of control.
 
