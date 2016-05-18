@@ -263,7 +263,7 @@ in accordance with their intended usage. Don't go off leaving
 everything `public` (which is the default). After all we're coding
 in *Ruby* now, not in *Python*.
 
-* Always extened self to declare private class methods. When you have the
+* Always extened `self` to declare private class methods. When you have the
   need for a private class method, there is most likely a related public class
   method on the same class, which is calling the private class method.
 
