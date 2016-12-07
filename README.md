@@ -498,15 +498,7 @@ introducing new exception classes.
 
 ## Misc
 
-* Prefer `Time.now` over `Time.new` when retrieving the current system time.
 * Do not mutate arguments unless that is the purpose of the method.
-
-## Ruby on Rails
-
-* Prefer `Time.zone.now` and `Time.current` over `Time.now` when retrieving the current system time.
-* Prefer `Date.zone.today` and `Date.current` over `Date.today` when retrieving todays date.
-* When [converting](http://www.elabs.se/blog/36-working-with-time-zones-in-ruby-on-rails) `Date` to `Time` always use `#to_time_with_zone`.
-* Always set `config.time_zone` in `application.rb`.
 
 # License
 
